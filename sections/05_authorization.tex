@@ -11,16 +11,17 @@ A lifecycle \action{release} created by the Mint to enforce expiration or livene
 
 An \action{update} or controller-requested \action{release} is three memos: Request, Relay, and Respond.
 
-\textbf{Request.} The controller submits the Request specified in Section~\ref{sec:requests} as an Ironwood output to the Mint's treasury account. That note MUST have value exactly two ZIP-317 marginal fee units for a two-action Ironwood bundle \cite{zip317}. The Mint spends the Request: one unit is the network fee, and one unit is delivered to the current controller with the Relay. The Mint retains no Relay value.
+\textbf{Request.} The controller submits the Request specified in Section~\ref{sec:requests} as an Ironwood output to the Mint's treasury account. That note MUST carry the request fee: one US dollar converted at the rate of the active pricing policy and rounded up to the next 100{,}000-zatoshi step. An underpaid Request is rejected and its value is retained by the Mint. The Request funds only the exchange; it is not the name price. The Relay is funded from the Mint's treasury account.
 
 \textbf{Relay.} The Mint sends the Relay to the Ironwood receiver contained in the Unified Address currently bound to the name. The Mint MUST reject the exchange if that Unified Address does not contain an Ironwood receiver. Successful authorization establishes access to that receiver only, not to any other receiver contained in the Unified Address.
 
-\textbf{Respond.} The controller sends the OTP back to the same treasury account:
+\textbf{Respond.} The controller sends the OTP back to the same treasury account. The Respond is byte-for-byte the Relay that delivered the code:
 
 \begin{center}
-\texttt{ZNS:update:<name>:<ua>:<otp>}\\
-\texttt{ZNS:release:<name>:<ua>:<otp>}
+\texttt{ZNS:otp:<otp>:<name>:<verb>:<ua>}
 \end{center}
+
+Relay and Respond are distinguished by direction, not by content.
 
 The name payment is on the Respond. That note MUST satisfy the price and payment requirements of the active pricing policy. The Request funds only the Relay; it is not the name price.
 
@@ -40,7 +41,7 @@ ZNS:otp:<otp>:<name>:<verb>:<ua>
 
 The six-digit code is the first field after the message type so a wallet displays it without the controller scanning later fields. The \texttt{<otp>} field is exactly six ASCII decimal digits, including leading zeroes. The \texttt{<name>} field is the name being updated or released. The \texttt{<verb>} field is \texttt{update} or \texttt{release}. The \texttt{<ua>} field is the target Unified Address from the Request.
 
-The memo is exactly 512 bytes and zero-padded. The \texttt{otp} message type distinguishes it from a Request or Respond as specified in Section~\ref{sec:requests}, and a parser for those memos MUST reject it as such.
+The memo is exactly 512 bytes and zero-padded. The \texttt{otp} message type distinguishes it from a Request. A Request parser MUST reject it; the Mint's parser accepts it as a Respond.
 
 Relay memos are sent from the Mint treasury account. That account's viewing key is not the published Name Note viewing key.
 
