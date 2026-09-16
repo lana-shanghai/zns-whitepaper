@@ -57,11 +57,9 @@ If all applicable requirements are satisfied, the Mint accepts the request and c
 
 \zns{} uses canonical-chain Median Time Past (MTP) rather than block counts or local system time for protocol-defined lifecycle periods. MTP is derived from Zcash block timestamps and has one-second granularity. It is chain-derived time rather than exact wall-clock time.
 
-% TODO: Mint request parsers do not yet encode a registration term. Claims currently register as expires_at=none.
-
 \subsubsection{Initial claims}
 
-A \action{claim} request specifies the name, the Unified Address, and either a requested registration term or no fixed expiration. The user does not supply an absolute \field{expires\_at} value.
+A \action{claim} request specifies the name, the Unified Address, and either a requested registration term or no fixed expiration. The user does not supply an absolute \field{expires\_at} value. A requested registration term MUST NOT exceed 99 years.
 
 For a fixed-term registration, the Mint computes \field{expires\_at} by adding the requested registration term to the canonical-chain MTP of the block containing the accepted claim request.
 
@@ -101,7 +99,7 @@ $$\text{new\_expires\_at} = \text{current\_expires\_at}.$$
 
 If the current \field{expires\_at} is \texttt{none}, an ordinary term extension does not change it.
 
-The extension is added to the existing \field{expires\_at}, rather than to the current time.
+The extension is added to the existing \field{expires\_at}, rather than to the current time. The resulting \field{expires\_at} MUST NOT be more than 99 years ahead of the canonical-chain MTP at which the Mint authorizes the renewal.
 
 Once the expiration condition has been reached, the Mint MUST NOT accept a new renewal request and MUST create the required \action{release} Name Note.
 
