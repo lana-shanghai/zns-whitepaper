@@ -15,7 +15,7 @@ Term & Definition \\
 Name Note & An Ironwood output whose memo records a name transition, including its \field{expires\_at} value, and whose \zns{}-specific note-commitment inputs are derived from that transition; see Section~\ref{sec:name-notes}. \\
 Request & A user-to-Mint memo asking the Mint to evaluate a \action{claim}, \action{update}, or \action{release}, with no OTP field; see Section~\ref{sec:requests}. \\
 Relay & A Mint-to-user memo of the form \texttt{ZNS:otp:<otp>:<name>:<verb>:<ua>} that delivers the OTP; see Section~\ref{sec:authorization}. \\
-Respond & A user-to-Mint memo that returns the OTP, byte-for-byte the Relay: \texttt{ZNS:otp:<otp>:<name>:<verb>:<ua>}; distinguished from the Relay by direction, not content; see Section~\ref{sec:requests} and Section~\ref{sec:authorization}. \\
+Respond & A user-to-Mint memo that returns the OTP, \texttt{ZNS:otp:<otp>:<name>:<verb>:<ua>}; the Relay and the Respond differ only in sender; see Section~\ref{sec:requests} and Section~\ref{sec:authorization}. \\
 Transition & A \action{claim}, \action{update}, or \action{release} recorded in a Name Note and represented by the tuple $\sigma$; see Section~\ref{sec:name-notes}. \\
 Predecessor (\field{prev\_rcm}) & The \field{rcm} of the previously accepted Name Note for the same name, encoded as 64 lowercase hexadecimal characters. The initial claim uses 64 zeroes; see Section~\ref{sec:name-notes}. \\
 Binding & The association between a name and a Unified Address established by its accepted Name Note history. \\

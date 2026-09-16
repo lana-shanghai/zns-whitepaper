@@ -11,17 +11,17 @@ A lifecycle \action{release} created by the Mint to enforce expiration or livene
 
 An \action{update} or controller-requested \action{release} is three memos: Request, Relay, and Respond.
 
-\textbf{Request.} The controller submits the Request specified in Section~\ref{sec:requests} as an Ironwood output to the Mint's treasury account. That note MUST carry the request fee: one US dollar converted at the rate of the active pricing policy and rounded up to the next 100{,}000-zatoshi step. An underpaid Request is rejected and its value is retained by the Mint. The Request funds only the exchange; it is not the name price. The Relay is funded from the Mint's treasury account.
+\textbf{Request.} The controller submits the Request specified in Section~\ref{sec:requests} as an Ironwood output to the Mint's treasury account. That note MUST carry the request fee of one US dollar, converted at the rate of the active pricing policy and rounded up to the next 100{,}000-zatoshi step. The fee provides Sybil resistance: an underpaid Request is rejected and its value is retained by the Mint. The fee is not the name price. The Relay is funded from the Mint's treasury account.
 
 \textbf{Relay.} The Mint sends the Relay to the Ironwood receiver contained in the Unified Address currently bound to the name. The Mint MUST reject the exchange if that Unified Address does not contain an Ironwood receiver. Successful authorization establishes access to that receiver only, not to any other receiver contained in the Unified Address.
 
-\textbf{Respond.} The controller sends the OTP back to the same treasury account. The Respond is byte-for-byte the Relay that delivered the code:
+\textbf{Respond.} The controller returns the memo it received, unchanged, to the same treasury account:
 
 \begin{center}
 \texttt{ZNS:otp:<otp>:<name>:<verb>:<ua>}
 \end{center}
 
-Relay and Respond are distinguished by direction, not by content.
+The Relay and the Respond differ only in sender.
 
 The name payment is on the Respond. That note MUST satisfy the price and payment requirements of the active pricing policy. The Request funds only the Relay; it is not the name price.
 

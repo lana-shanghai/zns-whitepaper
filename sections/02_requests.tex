@@ -5,7 +5,7 @@ A Request asks the Mint to evaluate a name change. A Respond returns an OTP for 
 
 \subsection{Request encoding}
 
-User-to-Mint memos are a 512-byte field. A parser removes the maximal trailing sequence of zero bytes. The remaining bytes MUST be UTF-8. The colon byte (\texttt{0x3a}) separates fields. The first field MUST be the exact ASCII bytes \texttt{ZNS}. Extra fields, missing fields, and empty required fields are rejected. The \texttt{<years?>} slot of an \action{update} is the one optional field: it may be empty.
+User-to-Mint memos are a 512-byte field. A parser removes the maximal trailing sequence of zero bytes. The remaining bytes MUST be UTF-8. The colon byte (\texttt{0x3a}) separates fields. The first field MUST be the exact ASCII bytes \texttt{ZNS}. Extra fields, missing fields, and empty required fields are rejected.
 
 The name field MUST contain between 1 and 63 bytes, each of which is ASCII \texttt{a}--\texttt{z} or \texttt{0}--\texttt{9}.
 
@@ -13,19 +13,19 @@ A Request has one of the following forms:
 
 \begin{center}
 \texttt{ZNS:claim:<term>:<name>:<ua>}\\
-\texttt{ZNS:update:<years?>:<name>:<ua>}\\
+\texttt{ZNS:update:<term>:<name>:<ua>}\\
 \texttt{ZNS:release:<name>:<ua>}
 \end{center}
 
-The \texttt{<term>} field of a \action{claim} is either the exact ASCII bytes \texttt{forever} or \texttt{<N>y}, where \texttt{<N>} is a canonical decimal integer from 1 to 99 with no leading zeroes. \texttt{forever} requests a registration without fixed expiration. The \texttt{<years?>} field of an \action{update} is either empty, which carries the current \field{expires\_at} forward unchanged, or \texttt{<N>y} under the same spelling rules, which requests an extension of \texttt{<N>} years. A \action{claim} MUST NOT use \texttt{none}, and an \action{update} MUST NOT use \texttt{none}: the slot is left empty or carries years.
+The \texttt{<term>} field of a \action{claim} is either the exact ASCII bytes \texttt{forever} or \texttt{<N>y}, where \texttt{<N>} is a canonical decimal integer from 1 to 99 with no leading zeroes. \texttt{forever} requests a registration without fixed expiration. The \texttt{<term>} field of an \action{update} is either the exact ASCII bytes \texttt{none}, which carries the current \field{expires\_at} forward unchanged, or \texttt{<N>y} under the same spelling rules, which requests an extension of \texttt{<N>} years. A \action{claim} MUST NOT use \texttt{none}: it says \texttt{forever}. No field of any memo is empty.
 
-A Respond has exactly one form, byte-for-byte the Relay specified in Section~\ref{sec:authorization}:
+A Respond has one of the following forms:
 
 \begin{center}
 \texttt{ZNS:otp:<otp>:<name>:<verb>:<ua>}
 \end{center}
 
-The Relay and the Respond are textually identical and are distinguished by direction, not by bytes: the same memo sent by the Mint is the Relay, and received by the Mint it is the Respond. The controller constructs nothing; the memo is copied back.
+The Relay and the Respond have the same form and differ only in sender: the Mint sends the Relay to the controller, and the controller sends the Respond back to the Mint. The controller constructs nothing; the memo is copied back.
 
 A Request or Respond MUST include a non-empty Unified Address. A \action{claim} is only a Request. Request and Respond memos do not encode \field{expires\_at} or \field{prev\_rcm}.
 
