@@ -17,7 +17,7 @@ A Request has one of the following forms:
 \texttt{ZNS:release:<name>:<ua>}
 \end{center}
 
-The \texttt{<term>} field of a \action{claim} is either the exact ASCII bytes \texttt{forever} or \texttt{<N>y}, where \texttt{<N>} is a canonical decimal integer from 1 to 99 with no leading zeroes. \texttt{forever} requests a registration without fixed expiration. The \texttt{<term>} field of an \action{update} is either the exact ASCII bytes \texttt{none}, which carries the current \field{expires\_at} forward unchanged, or \texttt{<N>y} under the same spelling rules, which requests an extension of \texttt{<N>} years. A \action{claim} MUST NOT use \texttt{none}: it says \texttt{forever}. No field of any memo is empty.
+The \texttt{<term>} field of a \action{claim} is either the exact ASCII bytes \texttt{forever} or \texttt{<N>y}, where \texttt{<N>} is a canonical decimal integer from 1 to 99 with no leading zeroes. \texttt{forever} requests a registration without fixed expiration. The \texttt{<term>} field of an \action{update} is one of: the exact ASCII bytes \texttt{none}, which carries the current \field{expires\_at} forward unchanged; \texttt{<N>y} under the same spelling rules, which requests an extension of \texttt{<N>} years; or the exact ASCII bytes \texttt{forever}, which requests an upgrade of a fixed-term registration to a registration without fixed expiration. An \action{update} MUST NOT use \texttt{forever} against a registration whose \field{expires\_at} is \texttt{none}: the upgrade applies only to a fixed-term registration. A \action{claim} MUST NOT use \texttt{none}: it says \texttt{forever}. No field of any memo is empty.
 
 A Respond has one of the following forms:
 

@@ -27,7 +27,7 @@ Resolver & A client that scans the canonical Zcash chain using the Name Note vie
 User authorization & Request, Relay, and Respond, used to authorize an \action{update} or controller-requested \action{release}. For an \action{update}, the OTP is bound to \texttt{(name, action, ua, expires\_at)}; see Section~\ref{sec:authorization}. \\
 One-time passcode (OTP) & A six-digit decimal passcode delivered in the Relay and returned in the Respond; see Section~\ref{sec:authorization}. \\
 Expiration (\field{expires\_at}) & The absolute Unix timestamp in whole seconds committed by a \action{claim} or \action{update} Name Note, or the exact value \texttt{none} for a registration without fixed expiration. \\
-Registration term & A duration requested for an initial fixed-term registration or renewal. The user supplies a term; the Mint computes the resulting absolute \field{expires\_at}; see Section~\ref{sec:the-mint-lifecycle}. \\
+Registration term & A duration requested for an initial fixed-term registration or renewal, or the exact value \texttt{forever} requested to upgrade a fixed-term registration. The user supplies a term; the Mint computes the resulting absolute \field{expires\_at}, or \texttt{none} for an upgrade; see Section~\ref{sec:the-mint-lifecycle}. \\
 Median Time Past (MTP) & The chain-derived time value obtained from the canonical Zcash chain and used by the Mint for protocol-defined time checks. \\
 Liveness time & The canonical-chain MTP associated with the block containing the accepted \action{claim} or most recent accepted \action{update} for a registration. \\
 Liveness deadline & The current liveness time plus the protocol-defined liveness interval. Reaching the deadline requires the Mint to create a \action{release} Name Note. \\

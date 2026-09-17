@@ -97,9 +97,11 @@ If no extension is requested:
 
 $$\text{new\_expires\_at} = \text{current\_expires\_at}.$$
 
-If the current \field{expires\_at} is \texttt{none}, an ordinary term extension does not change it.
+A registration without fixed expiration (\field{expires\_at} of \texttt{none}) MUST NOT be extended: an update requesting a term against such a registration is refused.
 
 The extension is added to the existing \field{expires\_at}, rather than to the current time. The resulting \field{expires\_at} MUST NOT be more than 99 years ahead of the canonical-chain MTP at which the Mint authorizes the renewal.
+
+An \action{update} with the term \texttt{forever} requests an upgrade of a fixed-term registration to a registration without fixed expiration; an upgrade is not an ordinary \action{update}. The resulting Name Note encodes \field{expires\_at} as \texttt{none}; the registration's liveness obligations are unchanged. The upgrade is subject to the price and payment requirements of the active pricing policy, in addition to the request fee; its payment is the Respond, as for any \action{update}. An upgrade MUST NOT be requested against a registration without fixed expiration.
 
 Once the expiration condition has been reached, the Mint MUST NOT accept a new renewal request and MUST create the required \action{release} Name Note.
 
