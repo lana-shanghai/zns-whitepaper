@@ -28,13 +28,15 @@ Approved enclave measurements, attestation requirements, and the approved source
 
 \subsection{Claim eligibility}
 
-Some names may be designated as protected for a limited protection period to reduce impersonation, misleading claims of affiliation, and opportunistic registration of names associated with existing identities or projects.
+Some names may be designated as protected for a limited early-access window to reduce impersonation, misleading claims of affiliation, and opportunistic registration of names associated with existing identities or projects.
 
-A protected name is temporarily excluded from the standard public claim process. During the protection period, a claim must include a valid access code, which the Mint verifies according to the protected-name policy before accepting the claim.
+During that window the Mint consults the attested protected-name policy to classify each claim name as open or protected. An open name follows the ordinary claim path. A protected name is accepted only if the claim Request carries the matching access code in the leading slot specified in Section~\ref{sec:requests}. A missing or incorrect code is rejected; the payment is retained by the Mint as for any other rejected claim. If the policy data source is temporarily unavailable, the Mint MUST defer evaluation of that claim until the next tip rather than accept or reject it.
 
-Access-code verification is performed by the Mint under the attested protected-name policy and is not independently reconstructed by the Resolver.
+Redemption is derived from registry state: once a protected name has an accepted live Name Note, further claims for that name fail under the ordinary namespace rules. The Mint does not mark codes spent in an external store.
 
-When the protection period ends, an unclaimed protected name becomes eligible for the standard public claim process. Once a protected name is validly claimed, it is governed by the same transition and authorization rules as any other name.
+The current \zns{} deployment MUST fix a general-availability day on the Mint's day clock (canonical-chain MTP days since the Mint birthday). At and after that day, access codes are ignored and every name is eligible for the ordinary public claim path. Unredeemed codes become worthless.
+
+Access-code verification is Mint policy under attestation and is not independently reconstructed by the Resolver. Once a protected name is validly claimed, it is governed by the same transition and authorization rules as any other name.
 
 \subsection{Request evaluation}
 
@@ -44,6 +46,7 @@ The Mint evaluates each request against the following requirements:
 
 \begin{itemize}
   \item \textbf{Namespace state.} The requested change must be permitted by the current state of the name.
+  \item \textbf{Claim eligibility.} A \action{claim} must satisfy the protected-name rules in Claim eligibility above, including any required access code.
   \item \textbf{Payment.} The memo must satisfy the price and payment requirements defined by the active pricing policy. For a \action{claim}, that payment is the Request. For an \action{update} or controller-requested \action{release}, that payment is the Respond specified in Section~\ref{sec:authorization}.
   \item \textbf{Request validity.} The Request or Respond must satisfy Section~\ref{sec:requests}. The name, Unified Address when applicable, requested registration term or extension when applicable, and resulting encoded transition must satisfy the protocol's validity rules.
   \item \textbf{Lifecycle policy.} The request must satisfy the active registration, expiration, renewal, and liveness rules defined in Section~\ref{sec:the-mint-lifecycle}.
