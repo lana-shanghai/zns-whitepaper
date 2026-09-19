@@ -11,7 +11,7 @@
 
 \subsection{TEE security}
 
-\zns{} assumes that the selected TEE correctly executes the approved Mint code, protects the Mint spending key, and provides trustworthy remote attestation. This includes enforcement of claim eligibility, authorization, lifecycle, and pricing rules, correct calculation of \field{expires\_at}, and correct use of canonical-chain MTP for expiration, liveness, and OTP validity.
+\zns{} assumes that the selected TEE generates the Mint spending key, correctly executes the approved Mint code and pricing policy, and provides trustworthy remote attestation. This includes enforcement of claim eligibility, authorization, lifecycle, and pricing rules, correct calculation of \field{expires\_at}, and correct use of canonical-chain MTP for expiration, liveness, and OTP validity.
 
 A compromise of these properties could allow the Mint policy to be bypassed or unauthorized Name Notes to be created, but it would not allow previously confirmed Name Notes to be removed or rewritten outside Zcash consensus.
 
@@ -27,7 +27,7 @@ If registration pricing depends on external market data, \zns{} assumes that the
 
 \subsection{Protected-name access}
 
-During a protection period, \zns{} assumes that access codes are issued only to authorized claimants and remain unavailable to unauthorized parties. Disclosure or improper issuance of a valid access code can allow a protected name to be claimed before the protection period ends.
+During the early-access window, \zns{} assumes that access codes are issued only to authorized claimants and remain unavailable to unauthorized parties, and that the Mint's read of the protected-name policy is accurate enough to classify names as open or protected. Disclosure of a valid code, or a false open classification, can allow a protected name to be claimed before general availability. After the fixed general-availability day, these assumptions no longer apply to claim acceptance.
 
 \subsection{Mint availability}
 
